@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hengyan Lifting | Premium Hoisting Equipment & Components</title>
+  <meta name="description" content="Hebei Hengyan Hoisting Machinery Co., Ltd. — R&D and manufacturing of light hoisting equipment, winches, electric hoists, and lifting platforms. Serving 20+ countries worldwide.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET ===== */
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#000;color:#f7f5f5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    button{border:none;background:none;cursor:pointer;font:inherit;color:inherit}
+
+    /* ===== TOKENS ===== */
+    :root{
+      --black:#000;--off-white:#f7f5f5;--signal-yellow:#ffde3a;--steel-grey:#919191;
+      --font-mono:'JetBrains Mono',ui-monospace,monospace;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container-fluid{width:100%;max-width:1800px;margin:0 auto;padding-left:1.25rem;padding-right:1.25rem}
+    @media(min-width:1024px){.container-fluid{padding-left:2.5rem;padding-right:2.5rem}}
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s cubic-bezier(.16,1,.3,1),transform 0.8s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-left{opacity:0;transform:translateX(-60px);transition:opacity 0.8s cubic-bezier(.16,1,.3,1),transform 0.8s cubic-bezier(.16,1,.3,1)}
+    .reveal-left.visible{opacity:1;transform:translateX(0)}
+    .reveal-right{opacity:0;transform:translateX(60px);transition:opacity 0.8s cubic-bezier(.16,1,.3,1),transform 0.8s cubic-bezier(.16,1,.3,1)}
+    .reveal-right.visible{opacity:1;transform:translateX(0)}
+    .reveal-scale{opacity:0;transform:scale(0.9);transition:opacity 0.8s cubic-bezier(.16,1,.3,1),transform 0.8s cubic-bezier(.16,1,.3,1)}
+    .reveal-scale.visible{opacity:1;transform:scale(1)}
+
+    /* stagger children */
+    .stagger-children .reveal:nth-child(1){transition-delay:0s}
+    .stagger-children .reveal:nth-child(2){transition-delay:0.1s}
+    .stagger-children .reveal:nth-child(3){transition-delay:0.2s}
+    .stagger-children .reveal:nth-child(4){transition-delay:0.3s}
+    .stagger-children .reveal:nth-child(5){transition-delay:0.35s}
+    .stagger-children .reveal:nth-child(6){transition-delay:0.4s}
+
+    /* ===== NAV MOBILE ===== */
+    .nav-mobile{display:block;position:sticky;top:0;z-index:50000;border-bottom:1px solid var(--steel-grey);background:var(--black);transition:transform .3s ease-out}
+    .nav-mobile-inner{display:flex;height:64px;align-items:center;justify-content:space-between;padding:0 1rem}
+    .nav-logo{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:1.125rem;letter-spacing:-.02em;color:var(--off-white)}
+    .nav-logo-icon{width:32px;height:32px;background:var(--signal-yellow);border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.75rem;color:var(--black)}
+    .nav-actions{display:flex;align-items:center;gap:.25rem}
+    .nav-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--off-white);transition:color .2s}
+    .nav-btn:hover{color:var(--steel-grey)}
+    .hamburger{position:relative;width:40px;height:40px}
+    .hamburger span{position:absolute;display:block;height:2px;width:24px;background:currentColor;left:50%;transform:translateX(-50%);transition:all .3s ease-out}
+    .hamburger span:nth-child(1){top:calc(50% - 6px)}
+    .hamburger span:nth-child(2){top:50%}
+    .hamburger span:nth-child(3){top:calc(50% + 6px)}
+    @media(min-width:1024px){.nav-mobile{display:none}}
+
+    /* ===== NAV DESKTOP ===== */
+    .nav-desktop{display:none;position:sticky;top:0;z-index:50000;border-bottom:1px solid var(--steel-grey);background:var(--black);transition:transform .3s ease-out}
+    .nav-desktop-inner{display:flex;height:80px;align-items:center;justify-content:space-between}
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .nav-link{font-size:.8125rem;text-transform:uppercase;letter-spacing:.05em;color:var(--off-white);transition:color .2s;position:relative}
+    .nav-link:hover{color:var(--signal-yellow)}
+    .nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--signal-yellow);transition:width .3s ease}
+    .nav-link:hover::after{width:100%}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .nav-cta{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border:1px solid var(--off-white);border-radius:999px;font-size:.8125rem;text-transform:uppercase;letter-spacing:.05em;color:var(--off-white);transition:all .3s}
+    .nav-cta:hover{background:var(--signal-yellow);border-color:var(--signal-yellow);color:var(--black)}
+    @media(min-width:1024px){.nav-desktop{display:block}}
+
+    /* ===== MOBILE MENU ===== */
+    .mobile-menu{position:fixed;inset:0;z-index:49999;background:var(--black);display:flex;flex-direction:column;padding:5rem 1.5rem 2rem;transform:translateX(100%);transition:transform .35s ease}
+    .mobile-menu.open{transform:translateX(0)}
+    .mobile-menu-links{display:flex;flex-direction:column;gap:1.5rem}
+    .mobile-menu-links a{font-size:1.5rem;font-weight:500;color:var(--off-white);text-transform:uppercase;letter-spacing:.025em;transition:color .2s}
+    .mobile-menu-links a:hover{color:var(--signal-yellow)}
+    .mobile-menu-cta{margin-top:auto;padding:1rem 2rem;border:1px solid var(--off-white);text-align:center;font-size:1rem;text-transform:uppercase;letter-spacing:.05em;color:var(--off-white);transition:all .2s}
+    .mobile-menu-cta:hover{background:var(--signal-yellow);border-color:var(--signal-yellow);color:var(--black)}
+    @media(min-width:1024px){.mobile-menu{display:none}}
+    .nav-hidden{transform:translateY(-100%)}
+
+    /* ===== HERO SLIDER ===== */
+    .hero{position:relative;overflow:hidden;background:var(--black);margin-top:-2px}
+    .hero-slider{position:absolute;inset:0;z-index:0}
+    .hero-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s cubic-bezier(.4,0,.2,1);z-index:0}
+    .hero-slide.active{opacity:1;z-index:1}
+    .hero-slide img,.hero-slide video{width:100%;height:100%;object-fit:cover}
+    .hero-slide img{opacity:.85}
+    .hero-slide video{opacity:.9}
+    /* Ken Burns zoom on active image slide */
+    .hero-slide.active img{animation:ken-burns 8s ease-in-out forwards}
+    @keyframes ken-burns{0%{transform:scale(1)}100%{transform:scale(1.08)}}
+    .hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,#000 0%,rgba(9,9,11,.8) 30%,transparent 100%);pointer-events:none;z-index:2}
+    .hero-content{position:relative;z-index:10;display:flex;flex-direction:column;justify-content:flex-end;min-height:90svh;padding-bottom:1rem;padding-top:16rem;gap:1.5rem}
+    @media(min-width:1024px){.hero-content{flex-direction:row;align-items:flex-end;justify-content:space-between;min-height:85vh;padding-bottom:3rem;padding-top:24rem}}
+    @media(min-width:1280px){.hero-content{min-height:90vh}}
+    .hero-title{font-size:clamp(2.5rem,8vw,6rem);font-weight:700;line-height:1.05;letter-spacing:-.025em;color:#fff}
+    .hero-cta{font-size:clamp(1rem,2vw,1.5rem);text-transform:uppercase;color:var(--off-white);transition:color .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:.25rem;align-self:flex-start}
+    @media(min-width:640px){.hero-cta{align-self:flex-end}}
+    .hero-cta:hover{color:var(--signal-yellow)}
+    .hero-cta svg{width:1em;height:1em}
+    .scramble-char{display:inline-block;position:relative;text-align:center}
+    .scramble-char .real{visibility:hidden}
+    .scramble-char .display{position:absolute;inset:0}
+    .scramble-word{display:inline-block;white-space:nowrap}
+
+    /* Slide indicators */
+    .hero-indicators{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:20;display:flex;gap:.75rem;align-items:center}
+    @media(min-width:1024px){.hero-indicators{bottom:2.5rem;left:auto;right:2.5rem;transform:none}}
+    .hero-dot{width:32px;height:2px;background:rgba(247,245,245,.3);cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+    .hero-dot.active{background:rgba(247,245,245,.15)}
+    .hero-dot-fill{position:absolute;top:0;left:0;height:100%;width:0;background:var(--off-white)}
+    .hero-dot.active .hero-dot-fill{animation:dot-progress var(--slide-duration) linear forwards}
+    @keyframes dot-progress{0%{width:0}100%{width:100%}}
+
+    /* ===== SECTION: STATS ===== */
+    .stats{background:var(--black);padding:6rem 0;border-top:1px solid rgba(145,145,145,.2)}
+    .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3rem 2rem}
+    @media(min-width:768px){.stats-grid{grid-template-columns:repeat(4,1fr);gap:2rem}}
+    .stat-item{text-align:center}
+    .stat-number{font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--signal-yellow);font-variant-numeric:tabular-nums}
+    .stat-suffix{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:800;color:var(--signal-yellow)}
+    .stat-label{margin-top:.75rem;font-size:.875rem;text-transform:uppercase;letter-spacing:.1em;color:var(--steel-grey)}
+    .stat-divider{display:none;width:1px;background:rgba(145,145,145,.3);height:80px;align-self:center}
+    @media(min-width:768px){.stat-divider{display:block}}
+
+    /* ===== SECTION: ABOUT ===== */
+    .about{background:var(--black);padding:8rem 0;overflow:hidden}
+    .about-grid{display:grid;grid-template-columns:1fr;gap:4rem}
+    @media(min-width:1024px){.about-grid{grid-template-columns:1fr 1fr;gap:6rem;align-items:center}}
+    .about-text-wrap{display:flex;flex-direction:column;gap:2rem}
+    .about-label{font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--signal-yellow)}
+    .about-title{font-size:clamp(2rem,4vw,3.5rem);font-weight:700;line-height:1.1;letter-spacing:-.025em}
+    .about-desc{font-size:1rem;line-height:1.8;color:var(--steel-grey)}
+    .about-desc strong{color:var(--off-white);font-weight:600}
+    .about-image-wrap{position:relative}
+    .about-image{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(.9)}
+    .about-image-wrap::after{content:'';position:absolute;inset:0;border:1px solid rgba(255,222,58,.15)}
+    .parallax-wrap{overflow:hidden;position:relative}
+    .parallax-img{transition:transform .1s linear;will-change:transform}
+
+    /* ===== SECTION: MANUFACTURING ===== */
+    .manufacturing{background:var(--black);padding:8rem 0;border-top:1px solid rgba(145,145,145,.2)}
+    .mfg-header{text-align:center;margin-bottom:4rem}
+    .mfg-label{font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--signal-yellow);margin-bottom:1rem}
+    .mfg-title{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.025em}
+    .mfg-timeline{display:grid;grid-template-columns:1fr;gap:2rem}
+    @media(min-width:768px){.mfg-timeline{grid-template-columns:repeat(3,1fr);gap:1.5rem}}
+    .mfg-card{position:relative;background:#0a0a0a;border:1px solid rgba(145,145,145,.15);overflow:hidden;transition:border-color .4s,transform .4s}
+    .mfg-card:hover{border-color:var(--signal-yellow);transform:translateY(-4px)}
+    .mfg-card-img{width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1);filter:brightness(.8)}
+    .mfg-card:hover .mfg-card-img{transform:scale(1.05)}
+    .mfg-card-body{padding:1.5rem}
+    .mfg-step{font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--signal-yellow);margin-bottom:.75rem}
+    .mfg-card-title{font-size:1.125rem;font-weight:600;margin-bottom:.5rem}
+    .mfg-card-desc{font-size:.875rem;line-height:1.7;color:var(--steel-grey)}
+    /* connector line between cards */
+    @media(min-width:768px){
+      .mfg-card:not(:last-child)::after{content:'';position:absolute;top:50%;right:-0.75rem;width:1.5rem;height:1px;background:var(--signal-yellow);opacity:.4}
+    }
+
+    /* ===== SECTION: EXHIBITION ===== */
+    .exhibition{background:var(--black);padding:8rem 0;border-top:1px solid rgba(145,145,145,.2)}
+    .exh-header{display:flex;flex-direction:column;gap:1rem;margin-bottom:4rem}
+    @media(min-width:768px){.exh-header{flex-direction:row;align-items:flex-end;justify-content:space-between}}
+    .exh-title-wrap{}
+    .exh-label{font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--signal-yellow);margin-bottom:1rem}
+    .exh-title{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.025em}
+    .exh-subtitle{font-size:.875rem;color:var(--steel-grey);max-width:400px}
+    .exh-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+    @media(min-width:768px){.exh-grid{grid-template-columns:repeat(3,1fr);gap:.75rem}}
+    @media(min-width:1280px){.exh-grid{grid-template-columns:repeat(3,1fr);gap:1rem}}
+    .exh-item{position:relative;overflow:hidden;aspect-ratio:4/3;cursor:pointer}
+    .exh-item:nth-child(1){grid-column:span 2;aspect-ratio:2/1}
+    @media(min-width:768px){.exh-item:nth-child(1){grid-column:span 2;grid-row:span 2;aspect-ratio:auto}}
+    .exh-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1),filter .4s}
+    .exh-item:hover img{transform:scale(1.08);filter:brightness(.6)}
+    .exh-overlay{position:absolute;inset:0;display:flex;align-items:flex-end;padding:1.5rem;opacity:0;transition:opacity .4s;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 60%)}
+    .exh-item:hover .exh-overlay{opacity:1}
+    .exh-overlay-text{font-size:.875rem;font-weight:500;color:var(--off-white);transform:translateY(10px);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+    .exh-item:hover .exh-overlay-text{transform:translateY(0)}
+
+    /* ===== SECTION: GLOBAL REACH ===== */
+    .global{background:var(--black);padding:8rem 0;border-top:1px solid rgba(145,145,145,.2);overflow:hidden}
+    .global-grid{display:grid;grid-template-columns:1fr;gap:4rem}
+    @media(min-width:1024px){.global-grid{grid-template-columns:1fr 1fr;gap:6rem;align-items:center}}
+    .global-text{display:flex;flex-direction:column;gap:2rem}
+    .global-label{font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--signal-yellow)}
+    .global-title{font-size:clamp(2rem,4vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-.025em}
+    .global-desc{font-size:1rem;line-height:1.8;color:var(--steel-grey)}
+    .global-badges{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem}
+    .global-badge{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border:1px solid rgba(145,145,145,.3);font-size:.8125rem;color:var(--off-white);transition:border-color .3s,background .3s}
+    .global-badge:hover{border-color:var(--signal-yellow);background:rgba(255,222,58,.05)}
+    .global-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--signal-yellow);animation:pulse-dot 2s ease infinite}
+    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+
+    .global-map-wrap{position:relative}
+    .global-map-wrap svg{width:100%;height:auto}
+    .map-land{fill:#1a1a2e;stroke:#2a2a4e;stroke-width:.5;transition:fill .3s}
+    .map-highlight{fill:var(--signal-yellow);opacity:.15;animation:map-glow 3s ease infinite}
+    @keyframes map-glow{0%,100%{opacity:.1}50%{opacity:.25}}
+    .map-dot{fill:var(--signal-yellow);filter:drop-shadow(0 0 6px rgba(255,222,58,.6))}
+    .map-dot-pulse{fill:var(--signal-yellow);opacity:0;animation:dot-pulse 2s ease infinite}
+    @keyframes dot-pulse{0%{r:3;opacity:.6}100%{r:12;opacity:0}}
+
+    /* ===== SECTION: CTA ===== */
+    .cta-section{position:relative;overflow:hidden;padding:10rem 0;background:var(--black)}
+    .cta-bg{position:absolute;inset:0}
+    .cta-bg img{width:100%;height:100%;object-fit:cover;opacity:.3;animation:cta-zoom 20s ease infinite alternate}
+    @keyframes cta-zoom{0%{transform:scale(1)}100%{transform:scale(1.1)}}
+    .cta-bg-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.6) 100%)}
+    .cta-content{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2rem}
+    .cta-title{font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1.05;letter-spacing:-.03em}
+    .cta-title .yellow{color:var(--signal-yellow)}
+    .cta-subtitle{font-size:1.125rem;line-height:1.7;color:var(--steel-grey);max-width:600px}
+    .cta-buttons{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+    .btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 2rem;background:var(--signal-yellow);color:var(--black);font-weight:600;font-size:1rem;text-transform:uppercase;letter-spacing:.05em;transition:all .3s;border:2px solid var(--signal-yellow)}
+    .btn-primary:hover{background:transparent;color:var(--signal-yellow)}
+    .btn-secondary{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 2rem;border:2px solid var(--off-white);color:var(--off-white);font-weight:600;font-size:1rem;text-transform:uppercase;letter-spacing:.05em;transition:all .3s}
+    .btn-secondary:hover{border-color:var(--signal-yellow);color:var(--signal-yellow)}
+    .btn-primary svg,.btn-secondary svg{width:1em;height:1em}
+
+    /* Typewriter cursor */
+    .typewriter{overflow:hidden;border-right:3px solid var(--signal-yellow);white-space:nowrap;animation:blink-caret .75s step-end infinite}
+    @keyframes blink-caret{from,to{border-color:var(--signal-yellow)}50%{border-color:transparent}}
+
+    /* ===== PRODUCT CAROUSEL (existing) ===== */
+    .categories{background:var(--black);padding:6rem 0;border-top:1px solid rgba(145,145,145,.2)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .carousel-wrapper{position:relative;width:100%;overflow:visible}
+    .carousel-scroll{display:flex;gap:.5rem;overflow-x:auto;overflow-y:hidden;scroll-behavior:smooth;padding-bottom:1rem;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+    .carousel-scroll::-webkit-scrollbar{display:none}
+    .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:var(--black);border:1px solid var(--off-white);color:var(--off-white);cursor:pointer;z-index:50;display:none;align-items:center;justify-content:center;transition:all .2s ease;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+    .carousel-btn.visible{display:flex}
+    .carousel-btn:hover{border-color:var(--signal-yellow);color:var(--signal-yellow)}
+    .carousel-btn-left{left:-1.5%}
+    .carousel-btn-right{right:-1.5%}
+    @media(max-width:640px){.carousel-btn{width:40px;height:40px}}
+    .carousel-indicator{margin-top:1rem}
+    .carousel-track{height:2px;background:var(--steel-grey);position:relative;overflow:hidden;cursor:pointer;touch-action:none}
+    .carousel-thumb{height:100%;background:var(--off-white);width:30%;transition:transform .1s ease,background .15s ease;pointer-events:none}
+    .category-card{display:flex;flex-direction:column;min-width:280px;max-width:280px;transition:all .3s}
+    @media(min-width:640px){.category-card{min-width:320px;max-width:320px}}
+    @media(min-width:1024px){.category-card{min-width:340px;max-width:340px}}
+    @media(min-width:1536px){.category-card{min-width:400px;max-width:400px}}
+    .category-card-image{position:relative;width:100%;aspect-ratio:9/16;overflow:hidden;background:#0a0a0a}
+    .category-card-image img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+    .category-card:hover .category-card-image img{transform:scale(1.05)}
+    .category-card-info{padding:1rem 0}
+    .category-card-title{font-size:1.125rem;font-weight:500;color:var(--off-white);margin-bottom:.25rem;line-height:1.3}
+    .category-card:hover .category-card-title{text-decoration:underline}
+    .category-card-sub{font-family:var(--font-mono);font-size:.75rem;color:var(--steel-grey);line-height:1.6}
+    .section-cta{display:flex;justify-content:flex-end;margin-top:1rem}
+    .cta-link{font-size:clamp(1rem,2vw,1.5rem);text-transform:uppercase;color:var(--steel-grey);transition:color .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:.25rem}
+    .cta-link:hover{color:var(--signal-yellow)}
+    .cta-link svg{width:1em;height:1em}
+
+    /* ===== FOOTER ===== */
+    footer{background:var(--black)}
+    .footer-main{display:flex;flex-direction:column-reverse;padding:2.5rem 0}
+    @media(min-width:1024px){.footer-main{flex-direction:row;padding:4rem 0}}
+    .footer-left{display:flex;flex-direction:column;width:100%;padding-top:.5rem;margin-top:2.5rem}
+    @media(min-width:1024px){.footer-left{width:40%;flex-shrink:0;justify-content:space-between;margin-top:0}}
+    .footer-info{display:flex;flex-direction:column;gap:1.5rem}
+    @media(min-width:1024px){.footer-info{gap:2rem}}
+    .footer-info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+    @media(min-width:1024px){.footer-info-grid{gap:2rem}}
+    .footer-label{display:block;margin-bottom:.75rem;font-size:.75rem;text-transform:uppercase;color:var(--steel-grey)}
+    .footer-text{font-size:.75rem;line-height:1.6;color:var(--off-white)}
+    .footer-text a{transition:color .2s}
+    .footer-text a:hover{color:#a1a1aa}
+    .footer-logo-wrap{margin-top:2rem}
+    @media(min-width:1024px){.footer-logo-wrap{margin-top:2.5rem}}
+    .footer-logo-text{font-size:1.5rem;font-weight:700;color:var(--off-white);letter-spacing:-.02em;display:flex;align-items:center;gap:.625rem}
+    .footer-logo-text .logo-box{width:36px;height:36px;background:var(--signal-yellow);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;color:var(--black)}
+    .footer-right{flex:1;display:flex}
+    @media(min-width:1024px){.footer-right{justify-content:flex-end}}
+    .footer-nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+    @media(min-width:640px){.footer-nav-grid{grid-template-columns:repeat(4,1fr);gap:2.5rem 5rem}}
+    .footer-nav-title{display:block;margin-bottom:1.5rem;font-size:.75rem;text-transform:uppercase;color:var(--steel-grey)}
+    .footer-nav-links{display:flex;flex-direction:column;gap:.625rem}
+    .footer-nav-links a{font-size:.75rem;color:var(--off-white);transition:color .2s}
+    .footer-nav-links a:hover{color:var(--signal-yellow)}
+    .footer-bottom{border-top:1px solid var(--steel-grey)}
+    .footer-bottom-inner{padding:1.5rem 0}
+    .footer-copyright{font-size:.75rem;text-transform:uppercase;color:var(--steel-grey)}
+  </style>
+</head>
+<body>
+
+<!-- ===== MOBILE NAV ===== -->
+<nav class="nav-mobile" id="nav-mobile">
+  <div class="nav-mobile-inner">
+    <a href="/" class="nav-logo"><span class="nav-logo-icon">HY</span>HENGYAN</a>
+    <div class="nav-actions">
+      <a href="mailto:info@hengyanlifting.com" class="nav-btn" aria-label="Email us"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+      <button class="nav-btn hamburger" id="hamburger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-links">
+    <a href="#products">Products</a><a href="#about">About Us</a><a href="#manufacturing">Manufacturing</a><a href="#exhibitions">Exhibitions</a><a href="#global">Global Reach</a><a href="#contact">Contact</a>
+  </div>
+  <a href="mailto:info@hengyanlifting.com" class="mobile-menu-cta">Get A Quote</a>
+</div>
+
+<!-- ===== DESKTOP NAV ===== -->
+<nav class="nav-desktop" id="nav-desktop">
+  <div class="container-fluid">
+    <div class="nav-desktop-inner">
+      <a href="/" class="nav-logo"><span class="nav-logo-icon">HY</span>HENGYAN</a>
+      <div class="nav-links">
+        <a href="#products" class="nav-link">Products</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#manufacturing" class="nav-link">Manufacturing</a>
+        <a href="#exhibitions" class="nav-link">Exhibitions</a>
+        <a href="#global" class="nav-link">Global</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <div class="nav-right">
+        <a href="mailto:info@hengyanlifting.com" class="nav-cta">Get A Quote <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" style="width:1em;height:1em"><path d="m216-160-56-56 464-464H360v-80h400v400h-80v-264L216-160Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div>
+
+<!-- ===== 1. HERO SLIDER ===== -->
+<section class="hero" id="hero-slider" style="--slide-duration:6s">
+  <!-- Slides -->
+  <div class="hero-slider">
+    <div class="hero-slide active" data-slide="0">
+      <img src="工厂/5e868e006c8d47c32795942456c16e06.jpg" alt="Hengyan Lifting Factory" loading="eager">
+    </div>
+    <div class="hero-slide" data-slide="1">
+      <video autoplay muted loop playsinline preload="auto" poster="工厂/5e868e006c8d47c32795942456c16e06.jpg">
+        <source src="hero video.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+  <div class="hero-gradient"></div>
+
+  <!-- Content overlay -->
+  <div class="hero-content container-fluid">
+    <h1 class="hero-title" id="scramble-target">
+      <span class="scramble-line">Precision Built.</span><br>
+      <span class="scramble-line">Lifting Global.</span>
+    </h1>
+    <a href="mailto:info@hengyanlifting.com" class="hero-cta">Get A Quote <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor"><path d="m216-160-56-56 464-464H360v-80h400v400h-80v-264L216-160Z"/></svg></a>
+  </div>
+
+  <!-- Slide indicators -->
+  <div class="hero-indicators">
+    <div class="hero-dot active" data-goto="0"><div class="hero-dot-fill"></div></div>
+    <div class="hero-dot" data-goto="1"><div class="hero-dot-fill"></div></div>
+  </div>
+</section>
+
+<!-- ===== 2. STATS COUNTER ===== -->
+<section class="stats">
+  <div class="container-fluid">
+    <div class="stats-grid stagger-children">
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="counter" data-target="12000">0</span><span class="stat-suffix">+</span></div>
+        <p class="stat-label">Customers Served</p>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="counter" data-target="34">0</span></div>
+        <p class="stat-label">Provinces Covered</p>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="counter" data-target="20">0</span><span class="stat-suffix">+</span></div>
+        <p class="stat-label">Export Countries</p>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="counter" data-target="100">0</span><span class="stat-suffix">%</span></div>
+        <p class="stat-label">Quality Pass Rate</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. PRODUCT CAROUSEL ===== -->
+<section class="categories" id="products">
+  <div class="container-fluid">
+    <h2 class="sr-only">Browse Products</h2>
+    <div class="carousel-wrapper" data-carousel-id="browse-products">
+      <button class="carousel-btn carousel-btn-left" aria-label="Scroll left"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"/></svg></button>
+      <div class="carousel-scroll">
+        <a href="#" class="category-card"><div class="category-card-image"><img src="pp1.jpg" alt="Electric Hoists" loading="lazy"></div><div class="category-card-info"><h3 class="category-card-title">Electric Hoists</h3><p class="category-card-sub">0.1 – 32 T</p></div></a>
+        <a href="#" class="category-card"><div class="category-card-image"><img src="pp2.jpg" alt="Chain Blocks" loading="lazy"></div><div class="category-card-info"><h3 class="category-card-title">Chain Blocks</h3><p class="category-card-sub">0.5 – 50 T</p></div></a>
+        <a href="#" class="category-card"><div class="category-card-image"><img src="pp3.jpg" alt="Electric Winches" loading="lazy"></div><div class="category-card-info"><h3 class="category-card-title">Electric Winches</h3><p class="category-card-sub">0.5 – 10 T</p></div></a>
+        <a href="#" class="category-card"><div class="category-card-image"><img src="pp4.jpg" alt="Mini Cranes" loading="lazy"></div><div class="category-card-info"><h3 class="category-card-title">Mini Cranes</h3><p class="category-card-sub">0.3 – 2 T</p></div></a>
+        <a href="#" class="category-card"><div class="category-card-image"><img src="pp5.jpg" alt="Wire Rope Winches" loading="lazy"></div><div class="category-card-info"><h3 class="category-card-title">Wire Rope Winches</h3><p class="category-card-sub">1 – 20 T</p></div></a>
+        <a href="#" class="category-card"><div class="category-card-image"><img src="pp6.jpg" alt="Pallet Trucks" loading="lazy"></div><div class="category-card-info"><h3 class="category-card-title">Pallet Trucks</h3><p class="category-card-sub">1 – 5 T</p></div></a>
+      </div>
+      <button class="carousel-btn carousel-btn-right" aria-label="Scroll right"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/></svg></button>
+      <div class="carousel-indicator"><div class="carousel-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><div class="carousel-thumb"></div></div></div>
+    </div>
+    <div class="section-cta">
+      <a href="mailto:info@hengyanlifting.com" class="cta-link">Get A Quote <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor"><path d="m216-160-56-56 464-464H360v-80h400v400h-80v-264L216-160Z"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. ABOUT ===== -->
+<section class="about" id="about">
+  <div class="container-fluid">
+    <div class="about-grid">
+      <div class="about-text-wrap">
+        <span class="about-label reveal">About Hengyan</span>
+        <h2 class="about-title reveal">An Industry Veteran in<br>Light Hoisting Equipment</h2>
+        <p class="about-desc reveal">
+          <strong>Hebei Hengyan Hoisting Machinery Co., Ltd.</strong> has been adhering to the philosophy of <strong>"Technology as the Core, Quality as the Foundation, Service as the Support"</strong> since its establishment.
+        </p>
+        <p class="about-desc reveal">
+          We specialize in R&D and manufacturing of electric hoists, chain blocks, intelligent lifting platforms, customized micro-motors, and high-precision winches — providing integrated <strong>"Product + Solution + O&M"</strong> services for industrial production, construction, and agricultural operations.
+        </p>
+        <p class="about-desc reveal">
+          Our products have covered <strong>34 provincial-level regions across China</strong>, and entered infrastructure projects in <strong>20+ countries</strong> across Southeast Asia, the Middle East, and Africa through the Belt & Road network.
+        </p>
+      </div>
+      <div class="about-image-wrap reveal-right">
+        <div class="parallax-wrap">
+          <img src="工厂/52adb21a647daa2210a2d4a80df014ef.jpg" alt="Hengyan factory production line" class="about-image parallax-img" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. MANUFACTURING ===== -->
+<section class="manufacturing" id="manufacturing">
+  <div class="container-fluid">
+    <div class="mfg-header reveal">
+      <p class="mfg-label">Quality Assurance</p>
+      <h2 class="mfg-title">Three-Level Inspection System</h2>
+    </div>
+    <div class="mfg-timeline stagger-children">
+      <div class="mfg-card reveal">
+        <img src="https://images.unsplash.com/photo-1661921364121-26825beef6e7?w=1200&q=80&auto=format&fit=crop" alt="Raw material inspection" class="mfg-card-img" loading="lazy">
+        <div class="mfg-card-body">
+          <span class="mfg-step">Step 01 &mdash; Incoming</span>
+          <h3 class="mfg-card-title">Raw Material Verification</h3>
+          <p class="mfg-card-desc">Every raw material batch undergoes 12-index verification including spectral analysis and hardness testing before warehouse entry.</p>
+        </div>
+      </div>
+      <div class="mfg-card reveal">
+        <img src="https://images.unsplash.com/photo-1738162837329-2f2a2cdebb5e?w=1200&q=80&auto=format&fit=crop" alt="Production traceability" class="mfg-card-img" loading="lazy">
+        <div class="mfg-card-body">
+          <span class="mfg-step">Step 02 &mdash; Production</span>
+          <h3 class="mfg-card-title">Full-Process Traceability</h3>
+          <p class="mfg-card-desc">Each unit receives a unique quality QR code for real-time access to CNC cutting, high-precision welding, and painting process parameters.</p>
+        </div>
+      </div>
+      <div class="mfg-card reveal">
+        <img src="https://images.unsplash.com/photo-1587572070076-e01aa0100947?w=1200&q=80&auto=format&fit=crop" alt="Finished product testing" class="mfg-card-img" loading="lazy">
+        <div class="mfg-card-body">
+          <span class="mfg-step">Step 03 &mdash; Testing</span>
+          <h3 class="mfg-card-title">Simulated Working Conditions</h3>
+          <p class="mfg-card-desc">Finished products undergo extreme overload and continuous start-stop tests on our simulation platform — ensuring 100% qualification rate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. EXHIBITION GALLERY ===== -->
+<section class="exhibition" id="exhibitions">
+  <div class="container-fluid">
+    <div class="exh-header">
+      <div class="exh-title-wrap reveal">
+        <p class="exh-label">Exhibitions</p>
+        <h2 class="exh-title">Meeting Partners<br>Around The World</h2>
+      </div>
+      <p class="exh-subtitle reveal">Hengyan actively participates in international trade fairs, showcasing our full product line to partners worldwide.</p>
+    </div>
+    <div class="exh-grid stagger-children">
+      <div class="exh-item reveal">
+        <img src="展会/32a5eeff2a46a9955988e6ee8a68f464.jpg" alt="Hengyan exhibition booth" loading="lazy">
+        <div class="exh-overlay"><span class="exh-overlay-text">Canton Fair 2024 &mdash; Main Booth</span></div>
+      </div>
+      <div class="exh-item reveal">
+        <img src="展会/62156b9774be2b32a4a794bf8aacbef8.jpg" alt="Product showcase" loading="lazy">
+        <div class="exh-overlay"><span class="exh-overlay-text">Product Display Zone</span></div>
+      </div>
+      <div class="exh-item reveal">
+        <img src="展会/64ed2ecc68b333baec068807cab8e955.jpg" alt="Exhibition products" loading="lazy">
+        <div class="exh-overlay"><span class="exh-overlay-text">Full Range Demonstration</span></div>
+      </div>
+      <div class="exh-item reveal">
+        <img src="展会/657df16d2776cfdbafc977bb786b0ab1.jpg" alt="Meeting with clients" loading="lazy">
+        <div class="exh-overlay"><span class="exh-overlay-text">Engaging With Global Buyers</span></div>
+      </div>
+      <div class="exh-item reveal">
+        <img src="展会/68324410b743a3d85043795d971f02e8.jpg" alt="Exhibition event" loading="lazy">
+        <div class="exh-overlay"><span class="exh-overlay-text">Live Product Testing</span></div>
+      </div>
+      <div class="exh-item reveal">
+        <img src="展会/96109d6e3ad3015446f4eeead7628720.jpg" alt="Exhibition hall" loading="lazy">
+        <div class="exh-overlay"><span class="exh-overlay-text">International Expo Hall</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. GLOBAL REACH ===== -->
+<section class="global" id="global">
+  <div class="container-fluid">
+    <div class="global-grid">
+      <div class="global-text">
+        <span class="global-label reveal">Global Reach</span>
+        <h2 class="global-title reveal">Trusted Across<br>20+ Countries</h2>
+        <p class="global-desc reveal">Through our agent network along the Belt & Road Initiative, Hengyan equipment supports port loading, factory relocation, and agricultural greenhouse construction across three continents.</p>
+        <div class="global-badges reveal">
+          <span class="global-badge"><span class="global-badge-dot"></span>Southeast Asia</span>
+          <span class="global-badge"><span class="global-badge-dot"></span>Middle East</span>
+          <span class="global-badge"><span class="global-badge-dot"></span>Africa</span>
+          <span class="global-badge"><span class="global-badge-dot"></span>South America</span>
+          <span class="global-badge"><span class="global-badge-dot"></span>Central Asia</span>
+        </div>
+      </div>
+      <div class="global-map-wrap reveal-scale">
+        <video autoplay muted loop playsinline style="width:100%;height:auto;border:1px solid rgba(145,145,145,.15)">
+          <source src="Global Reach.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. CTA ===== -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg">
+    <img src="展会/657df16d2776cfdbafc977bb786b0ab1.jpg" alt="Hengyan exhibition" loading="lazy">
+    <div class="cta-bg-overlay"></div>
+  </div>
+  <div class="cta-content container-fluid">
+    <h2 class="cta-title reveal">
+      Let's Build<br><span class="yellow typewriter" id="typewriter">Together.</span>
+    </h2>
+    <p class="cta-subtitle reveal">Whether you need standard hoisting equipment, OEM/ODM customization, or a complete lifting solution — we're ready to partner with you.</p>
+    <div class="cta-buttons reveal">
+      <a href="mailto:info@hengyanlifting.com" class="btn-primary">
+        Request A Quote
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor"><path d="m216-160-56-56 464-464H360v-80h400v400h-80v-264L216-160Z"/></svg>
+      </a>
+      <a href="#products" class="btn-secondary">
+        View Products
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container-fluid">
+    <div class="footer-main">
+      <div class="footer-left">
+        <div class="footer-info">
+          <div class="footer-info-grid">
+            <div><span class="footer-label">Headquarters</span><p class="footer-text">Qingyuan County, Baoding City,<br>Hebei Province, China</p></div>
+            <div><span class="footer-label">Business Hours</span><p class="footer-text">Mon – Sat: 8:00am – 5:30pm<br>(GMT+8 Beijing Time)</p></div>
+          </div>
+          <div><span class="footer-label">Contact</span><p class="footer-text"><a href="mailto:info@hengyanlifting.com">info@hengyanlifting.com</a><br>WhatsApp: +86 130 6221 9741</p></div>
+        </div>
+        <div class="footer-logo-wrap"><a href="/" class="footer-logo-text"><span class="logo-box">HY</span>HENGYAN</a></div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-nav-grid">
+          <div><span class="footer-nav-title">Products</span><nav class="footer-nav-links"><a href="#">Electric Hoists</a><a href="#">Chain Blocks</a><a href="#">Electric Winches</a><a href="#">Mini Cranes</a><a href="#">Wire Rope Winches</a><a href="#">Pallet Trucks</a></nav></div>
+          <div><span class="footer-nav-title">Services</span><nav class="footer-nav-links"><a href="#">OEM/ODM</a><a href="#">Custom Motors</a><a href="#">System Integration</a><a href="#">Technical Support</a><a href="#">Spare Parts</a></nav></div>
+          <div><span class="footer-nav-title">Company</span><nav class="footer-nav-links"><a href="#about">About Us</a><a href="#manufacturing">Manufacturing</a><a href="#exhibitions">Exhibitions</a><a href="#">Quality Control</a><a href="#">Certifications</a></nav></div>
+          <div><span class="footer-nav-title">Connect</span><nav class="footer-nav-links"><a href="mailto:info@hengyanlifting.com">Email Us</a><a href="#">WhatsApp</a><a href="#">WeChat</a><a href="#">Alibaba</a><a href="#">Made-in-China</a></nav></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container-fluid"><div class="footer-bottom-inner"><p class="footer-copyright">Copyright &copy; 2026 Hebei Hengyan Hoisting Machinery Co., Ltd.</p></div></div></div>
+</footer>
+
+<script>
+// ===== Hero Slider =====
+(function(){
+  const hero=document.getElementById('hero-slider');
+  if(!hero)return;
+  const slides=hero.querySelectorAll('.hero-slide');
+  const dots=hero.querySelectorAll('.hero-dot');
+  const duration=6000; // matches --slide-duration
+  let current=0;let timer=null;
+
+  function goTo(idx){
+    // Deactivate current
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    // Reset Ken Burns animation on image slides
+    const img=slides[current].querySelector('img');
+    if(img){img.style.animation='none';img.offsetHeight;img.style.animation='';}
+    // Activate new
+    current=idx;
+    slides[current].classList.add('active');
+    dots[current].classList.remove('active');
+    void dots[current].offsetWidth; // force reflow to restart animation
+    dots[current].classList.add('active');
+    // If video slide, restart video from beginning
+    const video=slides[current].querySelector('video');
+    if(video){video.currentTime=0;video.play().catch(()=>{});}
+  }
+
+  function next(){goTo((current+1)%slides.length)}
+
+  function startTimer(){clearInterval(timer);timer=setInterval(next,duration)}
+
+  // Click on dots
+  dots.forEach(dot=>{
+    dot.addEventListener('click',()=>{
+      const idx=+dot.dataset.goto;
+      if(idx===current)return;
+      goTo(idx);
+      startTimer(); // reset timer on manual click
+    });
+  });
+
+  // Pause on hover (desktop)
+  hero.addEventListener('mouseenter',()=>clearInterval(timer));
+  hero.addEventListener('mouseleave',()=>startTimer());
+
+  startTimer();
+})();
+
+// ===== Scramble Text =====
+(function(){
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+  document.querySelectorAll('.scramble-line').forEach(line=>{
+    const text=line.textContent.trim();line.textContent='';
+    text.split(' ').forEach((word,wIdx,arr)=>{
+      const ws=document.createElement('span');ws.className='scramble-word';
+      for(let i=0;i<word.length;i++){
+        const cs=document.createElement('span');cs.className='scramble-char';
+        cs.innerHTML=`<span class="real">${word[i]}</span><span class="display">${word[i]}</span>`;
+        ws.appendChild(cs);
+      }
+      line.appendChild(ws);
+      if(wIdx<arr.length-1)line.appendChild(document.createTextNode(' '));
+    });
+  });
+  setTimeout(()=>{
+    document.querySelectorAll('.scramble-char .display').forEach((el,i)=>{
+      const orig=el.textContent;const delay=150+i*18;let iter=0;
+      el.textContent=chars[Math.floor(Math.random()*chars.length)];
+      const iv=setInterval(()=>{
+        if(iter>=2){el.textContent=orig;clearInterval(iv);return}
+        el.textContent=chars[Math.floor(Math.random()*chars.length)];iter++;
+      },delay);
+    });
+  },300);
+})();
+
+// ===== Intersection Observer — Scroll Reveals =====
+(function(){
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+  },{threshold:0.15,rootMargin:'0px 0px -50px 0px'});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>io.observe(el));
+})();
+
+// ===== Counter Animation =====
+(function(){
+  let counted=false;
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting&&!counted){
+        counted=true;
+        document.querySelectorAll('.counter').forEach(counter=>{
+          const target=+counter.dataset.target;
+          const duration=2000;
+          const start=performance.now();
+          const easeOut=t=>1-Math.pow(1-t,3);
+          function tick(now){
+            const elapsed=now-start;
+            const progress=Math.min(elapsed/duration,1);
+            const value=Math.floor(easeOut(progress)*target);
+            counter.textContent=value.toLocaleString();
+            if(progress<1)requestAnimationFrame(tick);
+            else counter.textContent=target.toLocaleString();
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+    });
+  },{threshold:0.3});
+  const statsEl=document.querySelector('.stats');
+  if(statsEl)io.observe(statsEl);
+})();
+
+// ===== Parallax on About Image =====
+(function(){
+  const img=document.querySelector('.parallax-img');
+  if(!img)return;
+  const wrap=img.closest('.parallax-wrap');
+  window.addEventListener('scroll',()=>{
+    const rect=wrap.getBoundingClientRect();
+    const vh=window.innerHeight;
+    if(rect.top<vh&&rect.bottom>0){
+      const progress=(vh-rect.top)/(vh+rect.height);
+      const offset=(progress-0.5)*60;
+      img.style.transform=`translateY(${offset}px) scale(1.08)`;
+    }
+  },{passive:true});
+})();
+
+// ===== Typewriter Effect =====
+(function(){
+  const words=['Together.','Stronger.','Higher.','Further.'];
+  const el=document.getElementById('typewriter');
+  if(!el)return;
+  let wordIdx=0;let charIdx=0;let deleting=false;let pauseTimer=0;
+  function tick(){
+    const current=words[wordIdx];
+    if(!deleting){
+      charIdx++;
+      el.textContent=current.substring(0,charIdx);
+      if(charIdx===current.length){deleting=true;pauseTimer=2000;}
+      else pauseTimer=80+Math.random()*40;
+    }else{
+      charIdx--;
+      el.textContent=current.substring(0,charIdx);
+      if(charIdx===0){deleting=false;wordIdx=(wordIdx+1)%words.length;pauseTimer=500;}
+      else pauseTimer=40;
+    }
+    setTimeout(tick,pauseTimer);
+  }
+  // Start after element is visible
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){tick();io.unobserve(e.target)}});
+  },{threshold:0.3});
+  io.observe(el);
+})();
+
+// ===== Carousel =====
+(function(){
+  document.querySelectorAll('[data-carousel-id]').forEach(wrapper=>{
+    const scroll=wrapper.querySelector('.carousel-scroll');
+    const btnL=wrapper.querySelector('.carousel-btn-left');
+    const btnR=wrapper.querySelector('.carousel-btn-right');
+    const track=wrapper.querySelector('.carousel-track');
+    const thumb=wrapper.querySelector('.carousel-thumb');
+    if(!scroll||!btnL||!btnR||!track||!thumb)return;
+    const getStep=()=>{const f=scroll.firstElementChild;return f?f.offsetWidth+8:300};
+    btnL.addEventListener('click',()=>scroll.scrollBy({left:-getStep(),behavior:'smooth'}));
+    btnR.addEventListener('click',()=>scroll.scrollBy({left:getStep(),behavior:'smooth'}));
+    function update(){
+      const sl=scroll.scrollLeft,sw=scroll.scrollWidth,cw=scroll.clientWidth,max=sw-cw;
+      if(max<=0){btnL.classList.remove('visible');btnR.classList.remove('visible');return}
+      sl<=0?btnL.classList.remove('visible'):btnL.classList.add('visible');
+      sl>=max-1?btnR.classList.remove('visible'):btnR.classList.add('visible');
+      const ratio=max>0?sl/max:0,w=(cw/sw)*100;
+      thumb.style.width=w+'%';
+      thumb.style.transform=`translateX(${(ratio*(100-w))/(w/100)}%)`;
+    }
+    let dragging=false;
+    function startDrag(e){dragging=true;track.classList.add('dragging');scroll.style.scrollBehavior='auto';onDrag(e)}
+    function onDrag(e){
+      if(!dragging)return;e.preventDefault();
+      const rect=track.getBoundingClientRect(),cx='touches' in e?e.touches[0].clientX:e.clientX;
+      const tw=thumb.offsetWidth,pos=cx-rect.left-tw/2,maxPos=rect.width-tw;
+      const clamped=Math.max(0,Math.min(pos,maxPos)),pct=maxPos>0?clamped/maxPos:0;
+      scroll.scrollLeft=pct*(scroll.scrollWidth-scroll.clientWidth);
+    }
+    function endDrag(){if(!dragging)return;dragging=false;track.classList.remove('dragging');scroll.style.scrollBehavior='smooth'}
+    track.addEventListener('click',e=>{
+      if(dragging)return;const rect=track.getBoundingClientRect(),tw=thumb.offsetWidth;
+      const pos=e.clientX-rect.left-tw/2,maxPos=rect.width-tw;
+      const clamped=Math.max(0,Math.min(pos,maxPos)),pct=maxPos>0?clamped/maxPos:0;
+      scroll.scrollLeft=pct*(scroll.scrollWidth-scroll.clientWidth);
+    });
+    track.addEventListener('mousedown',startDrag);
+    document.addEventListener('mousemove',onDrag);
+    document.addEventListener('mouseup',endDrag);
+    track.addEventListener('touchstart',startDrag,{passive:false});
+    document.addEventListener('touchmove',onDrag,{passive:false});
+    document.addEventListener('touchend',endDrag);
+    scroll.addEventListener('scroll',update);
+    window.addEventListener('resize',update);
+    setTimeout(update,100);update();
+  });
+})();
+
+// ===== Mobile Menu =====
+(function(){
+  const btn=document.getElementById('hamburger-btn'),menu=document.getElementById('mobile-menu');
+  let isOpen=false;
+  btn.addEventListener('click',()=>{
+    isOpen=!isOpen;menu.classList.toggle('open',isOpen);
+    const spans=btn.querySelectorAll('span');
+    if(isOpen){spans[0].style.transform='translateX(-50%) rotate(45deg) translateY(6px)';spans[1].style.opacity='0';spans[2].style.transform='translateX(-50%) rotate(-45deg) translateY(-6px)'}
+    else{spans[0].style.transform='';spans[1].style.opacity='';spans[2].style.transform=''}
+  });
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    isOpen=false;menu.classList.remove('open');
+    const spans=btn.querySelectorAll('span');spans[0].style.transform='';spans[1].style.opacity='';spans[2].style.transform='';
+  }));
+})();
+
+// ===== Nav Hide on Scroll =====
+(function(){
+  let last=0;const nM=document.getElementById('nav-mobile'),nD=document.getElementById('nav-desktop');
+  window.addEventListener('scroll',()=>{
+    const c=window.scrollY;
+    if(c>last&&c>80){nM.classList.add('nav-hidden');nD.classList.add('nav-hidden')}
+    else{nM.classList.remove('nav-hidden');nD.classList.remove('nav-hidden')}
+    last=c;
+  });
+})();
+</script>
+</body>
+</html>

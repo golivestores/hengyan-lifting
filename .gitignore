@@ -1,0 +1,5 @@
+.DS_Store
+*.zip
+产品/optimized/
+.claude/
+.firecrawl/
